@@ -56,9 +56,17 @@ if os.path.exists(static_dir):
         # Allow API endpoints to fall through (FastAPI handles routers first, but this is a double check)
         if catchall.startswith(("auth/", "analyze-skin", "products", "dermatologists", "book-consultation", "reports", "orders", "chat", "admin/")):
             return None
+            
+        # 1. CHECK FOR ACTUAL FILES FIRST (fixes broken favicons, robots.txt, manifest.json)
+        file_path = os.path.join(static_dir, catchall)
+        if os.path.isfile(file_path):
+            return FileResponse(file_path)
+
+        # 2. FALLBACK TO REACT ROUTER
         index_file = os.path.join(static_dir, "index.html")
         if os.path.exists(index_file):
             return FileResponse(index_file)
+            
         return {"status": "static_mount_active", "message": "React index.html missing."}
 else:
     @app.get("/")
