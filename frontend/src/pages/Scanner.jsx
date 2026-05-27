@@ -47,7 +47,12 @@ export default function Scanner({
       stopCamera();
     };
   }, []);
-
+// Connect the camera stream to the video element once it appears on screen
+  useEffect(() => {
+    if (cameraActive && !cameraSimulated && videoRef.current && streamRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+    }
+  }, [cameraActive, cameraSimulated]);
   // Cycle loading logs during scan
   useEffect(() => {
     if (scanning && logIdx < diagnosticLogs.length) {
