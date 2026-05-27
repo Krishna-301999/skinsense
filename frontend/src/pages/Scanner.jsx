@@ -331,7 +331,7 @@ export default function Scanner({
           {cameraActive && !selectedImage && !cameraSimulated && (
             <div className="w-full h-full relative">
               <video 
-                ref={videoRefCallback} 
+                ref={videoRef} 
                 autoPlay 
                 playsInline 
                 muted
